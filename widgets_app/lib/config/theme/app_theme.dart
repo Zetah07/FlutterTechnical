@@ -8,7 +8,7 @@ const colorList = <Color> [
   Colors.red,
   Colors.green,
   Colors.yellow,
-  Colors.purple,
+  Colors.purpleAccent,
   Colors.orange,
   Colors.pink,
   Colors.teal,
