@@ -105,6 +105,7 @@ class CustomButton extends StatelessWidget {
       child: Material(
         color: colors.primary,
         child: InkWell(
+          hoverColor: colors.secondary,
           onTap: () {},
           child: const Padding(
             padding: EdgeInsets.symmetric( horizontal: 20, vertical: 10),
