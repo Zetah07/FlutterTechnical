@@ -51,5 +51,5 @@ const appMenuItems = <MenuItem>[
     link: '/ui_controls',
     icon: Icons.car_rental_outlined,
   )
-
+  
 ];
