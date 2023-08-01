@@ -9,7 +9,12 @@ const cards = <Map<String,dynamic>>[
   { 'elevation': 5.0, 'label': 'Elevation 5' },
 ];
 
+
+
+
+
 class CardsScreen extends StatelessWidget {
+
   static const String name = 'cards_screen';
 
   const CardsScreen({super.key});
@@ -37,22 +42,26 @@ class _CardsView extends StatelessWidget {
           ...cards.map( 
             (card) => _CardType1( elevation: card['elevation'], label: card['label'] ),
           ),
+
           ...cards.map( 
             (card) => _CardType2( elevation: card['elevation'], label: card['label'] ),
           ),
+
           ...cards.map( 
             (card) => _CardType3( elevation: card['elevation'], label: card['label'] ),
           ),
+
           ...cards.map( 
             (card) => _CardType4( elevation: card['elevation'], label: card['label'] ),
           ),
-
-          const SizedBox(height: 10)
-        ]
+          
+          const SizedBox(height: 50 ),
+        ],
       ),
     );
   }
 }
+
 
 class _CardType1 extends StatelessWidget {
 
@@ -79,16 +88,19 @@ class _CardType1 extends StatelessWidget {
                 onPressed: () {},
               ),
             ),
+
             Align(
               alignment: Alignment.bottomLeft,
               child: Text( label ),
             )
+
           ],
         ),
       ),
     );
   }
 }
+
 
 class _CardType2 extends StatelessWidget {
 
@@ -102,16 +114,14 @@ class _CardType2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final colors = Theme.of(context).colorScheme;
+
     return Card(
-      shadowColor: Colors.black26,
       shape: RoundedRectangleBorder(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-        ),
+        borderRadius: const BorderRadius.all( Radius.circular(12) ),
         side: BorderSide(
-          color: colors.outline,
+          color: colors.outline
         )
       ),
       elevation: elevation,
@@ -126,16 +136,20 @@ class _CardType2 extends StatelessWidget {
                 onPressed: () {},
               ),
             ),
+
             Align(
               alignment: Alignment.bottomLeft,
-              child: Text( '$label - outline' ),
+              child: Text('$label - outline'),
             )
+
           ],
         ),
       ),
     );
   }
 }
+
+
 
 class _CardType3 extends StatelessWidget {
 
@@ -149,6 +163,7 @@ class _CardType3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final colors = Theme.of(context).colorScheme;
 
     return Card(
@@ -165,16 +180,19 @@ class _CardType3 extends StatelessWidget {
                 onPressed: () {},
               ),
             ),
+
             Align(
               alignment: Alignment.bottomLeft,
-              child: Text( '$label - filled' ),
+              child: Text('$label - Filled'),
             )
+
           ],
         ),
       ),
     );
   }
 }
+
 
 
 class _CardType4 extends StatelessWidget {
@@ -190,22 +208,27 @@ class _CardType4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // ignore: unused_local_variable
+    final colors = Theme.of(context).colorScheme;
+
     return Card(
       clipBehavior: Clip.hardEdge,
       elevation: elevation,
       child: Stack(
         children: [
+
           Image.network(
-            'https://picsum.photos/id/${elevation.toInt() }/400/300', 
+            'https://picsum.photos/id/${ elevation.toInt() }/600/350',
             height: 350,
             fit: BoxFit.cover,
           ),
+
 
           Align(
             alignment: Alignment.topRight,
             child: Container(
               decoration: const BoxDecoration(
-                color: Colors.white10,
+                color: Colors.white,
                 borderRadius: BorderRadius.only( bottomLeft: Radius.circular(20) )
               ),
               child: IconButton(
@@ -214,8 +237,14 @@ class _CardType4 extends StatelessWidget {
               ),
             ),
           ),
+
+
         ],
       ),
     );
   }
 }
+
+
+
+

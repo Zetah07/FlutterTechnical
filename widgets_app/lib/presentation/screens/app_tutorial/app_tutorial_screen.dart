@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+
 class SlideInfo {
   final String title;
   final String caption;
@@ -11,18 +12,17 @@ class SlideInfo {
 }
 
 final slides = <SlideInfo>[
-  SlideInfo('Busca la comida', 'Magna do proident do eiusmod est occaecat.',
-      'assets/images/1.png'),
-  SlideInfo('Entrega la comida', 'Et labore cupidatat aliquip labore.',
-      'assets/images/2.png'),
-  SlideInfo(
-      'Busca la comida',
-      'Ipsum amet esse velit reprehenderit occaecat aliqua officia',
-      'assets/images/3.png'),
+  SlideInfo('Busca la comida', 'Exercitation voluptate cillum eu aute dolor irure aliquip.', 'assets/images/1.png'),
+  SlideInfo('Entrega rápida', 'Ullamco ullamco duis labore quis occaecat culpa laborum id incididunt.', 'assets/images/2.png'),
+  SlideInfo('Disfruta la comida', 'Ea officia exercitation voluptate nostrud amet esse ut exercitation deserunt est enim est.', 'assets/images/3.png'),
 ];
 
+
+
+
 class AppTutorialScreen extends StatefulWidget {
-  static const String name = 'app_tutorial_screen';
+
+  static const name = 'tutorial_screen';
 
   const AppTutorialScreen({super.key});
 
@@ -31,31 +31,34 @@ class AppTutorialScreen extends StatefulWidget {
 }
 
 class _AppTutorialScreenState extends State<AppTutorialScreen> {
-  final PageController _pageViewController = PageController();
-  bool _isLastPage = false;
+
+  final PageController pageviewController = PageController();
+  bool endReached = false;
 
   @override
-
   void initState() {
     super.initState();
-    _pageViewController.addListener(() {
-      if (_pageViewController.page == slides.length - 1) {
+
+    pageviewController.addListener(() {
+
+      final page = pageviewController.page ?? 0;
+      if ( !endReached && page >= (slides.length - 1.5) ) {
         setState(() {
-          _isLastPage = true;
-        });
-      } else {
-        setState(() {
-          _isLastPage = false;
+          endReached = true;
         });
       }
+
     });
+
   }
 
   @override
   void dispose() {
-    _pageViewController.dispose();
+    pageviewController.dispose();
+
     super.dispose();
   }
+
 
 
   @override
@@ -64,75 +67,84 @@ class _AppTutorialScreenState extends State<AppTutorialScreen> {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
+
           PageView(
-            controller: _pageViewController,
+            controller: pageviewController,
             physics: const BouncingScrollPhysics(),
-            children: slides
-                .map((slideData) => _Slide(
-                      title: slideData.title,
-                      caption: slideData.caption,
-                      imageUrl: slideData.imageUrl,
-                    ))
-                .toList(),
-          ),
-          Positioned(
-            right: 20,
-            top: 40,
-            child: TextButton(
-              child: const Text('Skip'),
-              onPressed: () => context.pop(),
-            ),
+            children: slides.map(
+              (slideData) => _Slide(
+                title: slideData.title, 
+                caption: slideData.caption, 
+                imageUrl: slideData.imageUrl
+              )
+            ).toList(),
           ),
 
-          _isLastPage ? Positioned(
-            bottom: 20,
+          Positioned(
             right: 20,
-            child: FadeInRight(
-              from: 15,
-              delay: const Duration(seconds: 1),
-              child: FilledButton(
-                child: const Text('Comenzar'),
-                onPressed: () => context.pop(),
+            top: 50,
+            child: TextButton(
+              child: const Text('Salir'),
+              onPressed: () => context.pop(),
+            )
+          ),
+
+          endReached ? 
+            Positioned(
+              bottom: 30,
+              right: 30,
+              child: FadeInRight(
+                from: 15,
+                delay: const Duration(seconds: 1),
+                child: FilledButton(
+                  onPressed: () => context.pop(),
+                  child: const Text('Comenzar'),
                 ),
-            ),
-            ) : const SizedBox(),
+              )
+            ): const SizedBox(),
 
         ],
       ),
+
     );
   }
 }
 
+
 class _Slide extends StatelessWidget {
+
   final String title;
   final String caption;
   final String imageUrl;
 
   const _Slide({
-    required this.title,
-    required this.caption,
-    required this.imageUrl,
+    required this.title, 
+    required this.caption, 
+    required this.imageUrl
   });
 
   @override
   Widget build(BuildContext context) {
+
     final titleStyle = Theme.of(context).textTheme.titleLarge;
     final captionStyle = Theme.of(context).textTheme.bodySmall;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image(image: AssetImage(imageUrl)),
-          const SizedBox(height: 10),
-          Text(title, style: titleStyle),
-          const SizedBox(height: 10),
-          Text(caption, style: captionStyle),
-        ],
-      )),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image( image: AssetImage( imageUrl )),
+            const SizedBox(height: 20 ),
+            Text( title, style: titleStyle, ),
+            const SizedBox(height: 10 ),
+            Text( caption, style: captionStyle, ),
+
+          ],
+        ),
+      ),
     );
   }
 }

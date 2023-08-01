@@ -46,7 +46,7 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
     isLoading = true;
     setState(() {});
 
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 2));
 
     addFiveImages();
     isLoading = false;
@@ -128,6 +128,7 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: ()=> context.pop(),
+        // child: const Icon(Icons.arrow_back_ios_new_outlined),
         child: isLoading 
           ? SpinPerfect(
               infinite: true,
