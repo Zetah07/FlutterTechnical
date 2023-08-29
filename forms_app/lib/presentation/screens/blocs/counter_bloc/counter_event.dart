@@ -12,3 +12,7 @@ class IncrementCounter extends CounterEvent {
   final int value;
   const IncrementCounter(this.value);
 }
+
+class CounterReset extends CounterEvent {
+  
+} 
