@@ -31,6 +31,14 @@ class HomeScreen extends StatelessWidget {
             child: Divider(),
           ),
 
+          ListTile(
+            title: const Text('Register'),
+            subtitle: const Text('Formulario de registro'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () {
+              context.push('/register');
+            },
+          ),
         ],
       ),
     );
