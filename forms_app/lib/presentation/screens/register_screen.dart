@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:forms_app/presentation/blocs/register/register_cubit.dart';
@@ -9,15 +11,13 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-        centerTitle: true,
-      ),
-      body: BlocProvider(
-        create: (context) => RegisterCubit(),
-        child: const _RegisterView(),
-      ),
-    );
+        appBar: AppBar(
+          title: const Text('Nuevo usuario'),
+        ),
+        body: BlocProvider(
+          create: (context) => RegisterCubit(),
+          child: const _RegisterView(),
+        ));
   }
 }
 
@@ -28,13 +28,14 @@ class _RegisterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SafeArea(
       child: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: EdgeInsets.symmetric(horizontal: 10),
         child: SingleChildScrollView(
           child: Column(
+            // mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              FlutterLogo(size: 100.0),
+              FlutterLogo(size: 100),
               _RegisterForm(),
-              SizedBox(height: 20.0),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -55,110 +56,69 @@ class _RegisterFormState extends State<_RegisterForm> {
 
   @override
   Widget build(BuildContext context) {
-    final registerCubit = context.watch<RegisterCubit>();
+    String username = '';
+    String email = '';
+    String password = '';
 
     return Form(
       key: _formKey,
       child: Column(children: [
         CustomTextField(
-          label: 'Nombre de Usuario',
-          hint: 'Ingrese su nombre de usuario',
-          errorMessage: 'El nombre de usuario es requerido',
-          onChanged: (value) => registerCubit.usernameChanged,
-          validator: (value) {
-            RegExp regExp = RegExp(r'^[a-zA-Z0-9]+$');
+          label: 'Nombre de usuario',
+            onChanged: (value) => username = value,
+            validator: (value) {
+              if ( value == null || value.isEmpty ) return 'Campo requerido';
+              if ( value.trim().isEmpty ) return 'Campo requerido';
+              if ( value.length < 6 ) return 'Más de 6 letras';
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
 
-            if (value == null || value.isEmpty) {
-              return 'El nombre de usuario es requerido';
-            }
-            if (value.trim().length < 6) {
-              return 'El nombre de usuario debe tener al menos 6 caracteres';
-            }
-            if (value.trim().length > 15) {
-              return 'El nombre de usuario no debe tener más de 15 caracteres';
-            }
-            if (value.trim().isEmpty) {
-              return 'Campo obligatorio';
-            }
-            if (value.contains(' ')) {
-              return 'El nombre de usuario no debe contener espacios';
-            }
-            if (!regExp.hasMatch(value)) {
-              return 'El nombre de usuario no debe contener caracteres especiales';
-            }
-
-            return null;
-          },
-        ),
-        const SizedBox(height: 20.0),
         CustomTextField(
-          label: 'Correo Electrónico',
-          hint: 'Ingrese su correo electrónico',
-          errorMessage: 'El correo electrónico es requerido',
-          onChanged: (value) => registerCubit.emailChanged,
-          validator: (value) {
-            RegExp regExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+          label: 'Correo electrónico',
+            onChanged: (value) => email = value,
+            validator: (value) {
+              if ( value == null || value.isEmpty ) return 'Campo requerido';
+              if ( value.trim().isEmpty ) return 'Campo requerido';
+              final emailRegExp = RegExp(
+                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+              );
 
-            if (value == null || value.isEmpty) {
-              return 'El correo electrónico es requerido';
-            }
-            if (!regExp.hasMatch(value)) {
-              return 'Ingrese un correo electrónico válido';
-            }
-            if (value.trim().isEmpty) {
-              return 'Campo obligatorio';
-            }
+              if ( !emailRegExp.hasMatch(value) ) return 'No tiene formato de correo';
 
-            return null;
-          },
-        ),
-        const SizedBox(height: 20.0),
+              return null;
+            },
+          ),
+          const SizedBox(height: 10),
+
         CustomTextField(
           label: 'Contraseña',
-          hint: 'Ingrese su contraseña',
-          obscureText: true,
-          errorMessage: 'La contraseña es requerida',
-          onChanged: (value) => registerCubit.passwordChanged,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'La contraseña es requerida';
-            }
-            if (value.trim().length < 6) {
-              return 'La contraseña debe tener al menos 6 caracteres';
-            }
-            if (value.trim().length > 15) {
-              return 'La contraseña no debe tener más de 15 caracteres';
-            }
-            if (value.trim().isEmpty) {
-              return 'Campo obligatorio';
-            }
-            if (value.contains(' ')) {
-              return 'La contraseña no debe contener espacios';
-            }
-            if (!value.contains(RegExp(r'[0-9]'))) {
-              return 'La contraseña debe contener al menos un número';
-            }
-            if (!value.contains(RegExp(r'[A-Z]'))) {
-              return 'La contraseña debe contener al menos una mayúscula';
-            }
-            if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
-              return 'La contraseña debe contener al menos un caracter especial';
-            }
-
-            return null;
-          },
-        ),
-        const SizedBox(height: 20.0),
-        FilledButton.tonalIcon(
-            onPressed: () {
-              final isValid = _formKey.currentState!.validate();
-              if (isValid) {
-                registerCubit.onSubmit();
-              }
+            obscureText: true,
+            onChanged: (value) => password = value,
+            validator: (value) {
+              if ( value == null || value.isEmpty ) return 'Campo requerido';
+              if ( value.trim().isEmpty ) return 'Campo requerido';
+              if ( value.length < 6 ) return 'Más de 6 letras';
+              return null;
             },
-            icon: const Icon(Icons.login),
-            label: const Text('Registrarse')),
-      ]),
+          ),
+
+          const SizedBox(height: 20),
+
+        FilledButton.tonalIcon(
+            onPressed: (){
+
+              final isValid = _formKey.currentState!.validate();
+              if ( !isValid ) return;
+
+              // print('$username, $email, $password');
+            }, 
+            icon: const Icon( Icons.save),
+            label: const Text('Crear usuario'),
+          ),
+        ],
+      )
     );
   }
 }
